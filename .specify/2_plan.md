@@ -86,7 +86,7 @@ idealab-content/
 │   ├── arquitectura.png
 │   ├── decisiones.md             ← decisiones ampliadas y Aprendizajes
 │   └── prompt-engineering.md     ← evolución de los prompts y resultados
-├── scripts/setup_github.sh       ← crea labels, milestones e issues
+├── scripts/setup_github.py       ← crea labels, milestones e issues
 ├── .pre-commit-config.yaml
 ├── docker-compose.yml            ← en la raíz
 ├── .env.example
@@ -152,7 +152,7 @@ idealab-content/
 - **Método de merge:** siempre *Create a merge commit*.
 - **Tags** al cerrar cada nivel: `v1-esencial`, `v2-medio`, `v3-avanzado`, `v4-experto` y `v1.0` en la entrega.
 
-**Idiomas:** código, nombres de archivos y ramas en inglés. Commits, issues, PRs, documentación e interfaz en español.
+**Idiomas:** código, nombres de archivos, ramas y columnas del tablero en inglés. Commits, issues, PRs, documentación e interfaz en español.
 
 ---
 
@@ -160,10 +160,13 @@ idealab-content/
 
 - **Una issue por tarea** de `3_tasks.md`, titulada con su ID: `T-1.4 · Plantillas de prompt v1`.
 - La issue no repite el diseño: enlaza a la sección de la spec. Si la issue y la spec no coinciden, manda la spec.
-- **Labels:** `nivel:esencial|medio|avanzado|experto|mejora|soporte|seguridad`, `área:backend|frontend|ia|docs|infra`, `gate`.
-- **Milestones:** uno por nivel más `Entrega`.
-- **Tablero (GitHub Projects):** `Backlog` · `Por hacer` · `En curso` · `En revisión` · `Hecho`.
-- Labels, milestones e issues se crean con `scripts/setup_github.sh`, que lee `3_tasks.md`. Así las issues no pueden desincronizarse de las tareas.
+- **Labels:**
+  - Fase: `fase:0-arranque`, `fase:1-esencial`, `fase:2-medio`, `fase:3-avanzado`, `fase:4-experto`, `fase:5-entrega`, `extras`.
+  - Tipo: `nivel:esencial|medio|avanzado|experto`, `nivel:mejora`, `nivel:seguridad`, `nivel:soporte`.
+  - `gate` para los hitos bloqueantes.
+- **Milestones:** uno por fase, **con fecha límite**: Arranque (sáb 3), Nivel Esencial (lun 5), Nivel Medio (mar 6), Nivel Avanzado (jue 8), Nivel Experto (sáb 10), Entrega (mié 14) y Extras (sin fecha).
+- **Tablero (GitHub Projects):** `Backlog` · `To Do` · `In Progress` · `In Review` · `Done`, con la descripción de cada columna en español. Cada día se mueven a `To Do` las tareas previstas en el calendario.
+- Labels, milestones e issues se crean con `scripts/setup_github.py`, que lee `3_tasks.md`. Así las issues no pueden desincronizarse de las tareas. Se puede ejecutar varias veces: no duplica lo que ya existe.
 
 ---
 

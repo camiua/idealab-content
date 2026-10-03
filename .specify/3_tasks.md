@@ -21,10 +21,24 @@ sobre `main` y `develop`: sin borrado, sin *force push* y PR obligatorio sin apr
 *Conceptos:* desarrollo guiado por especificaciones, flujo rama → PR → merge.
 *Hecho:* primer PR fusionado en `develop` con las tres specs.
 
-**T-0.3 · Estructura base y configuración** ⚪ · dep: T-0.2
-Carpetas `backend/`, `frontend/`, `docs/` y `scripts/`. `.gitignore` ampliado (Python, Node, `.env`,
-`.venv`, `node_modules`, `backend/data/`). `.env.example` con las variables de la spec §1.6. README
-mínimo con el objetivo y el diagrama en `docs/arquitectura.png`.
+> Las issues se crean justo después de las specs, para que todo el trabajo posterior tenga su issue.
+> Orden: T-0.1 → T-0.2 → T-0.5 → T-0.6 → T-0.3 → T-0.4 → T-0.7.
+
+**T-0.5 · Plantillas de issue y PR** ⚪ · dep: T-0.2
+`.github/ISSUE_TEMPLATE/tarea.md` y `.github/pull_request_template.md`.
+*Conceptos:* plantillas de GitHub, trazabilidad entre issue y PR.
+*Hecho:* al crear una issue o un PR en GitHub, aparece la plantilla.
+
+**T-0.6 · Labels, milestones, issues y tablero** ⚪ · dep: T-0.5
+`scripts/setup_github.py` con GitHub CLI: crea labels y milestones con fecha (plan §2.8) y una issue
+por tarea leyendo este archivo, sin duplicar las existentes. Tablero en GitHub Projects con cinco columnas.
+*Conceptos:* automatización con scripts, GitHub CLI, idempotencia.
+*Hecho:* todas las tareas tienen su issue, con labels y milestone, y aparecen en el tablero.
+
+**T-0.3 · Estructura base y configuración** ⚪ · dep: T-0.6
+`.gitignore` ampliado (Python, Node, `.env`, `.venv`, `node_modules`, `backend/data/`). `.env.example`
+con las variables de la spec §1.6. README mínimo con el objetivo y el diagrama en
+`docs/arquitectura.png`. `backend/` y `frontend/` se crean en T-1.2 y T-1.9 (Git no guarda carpetas vacías).
 *Conceptos:* `.gitignore`, variables de entorno, secretos.
 *Hecho:* `git status` no muestra nunca `.env` aunque exista.
 
@@ -32,16 +46,6 @@ mínimo con el objetivo y el diagrama en `docs/arquitectura.png`.
 `pre-commit` con el hook de `gitleaks`.
 *Conceptos:* hooks de Git, pre-commit.
 *Hecho:* un commit con una clave falsa de prueba queda bloqueado.
-
-**T-0.5 · Plantillas de issue y PR** ⚪ · dep: T-0.3
-`.github/ISSUE_TEMPLATE/tarea.md` y `.github/pull_request_template.md`.
-*Hecho:* al crear una issue o un PR en GitHub, aparece la plantilla.
-
-**T-0.6 · Labels, milestones, issues y tablero** ⚪ · dep: T-0.5
-`scripts/setup_github.sh` con GitHub CLI: crea labels y milestones (plan §2.8) y una issue por
-tarea leyendo este archivo. Tablero en GitHub Projects con cinco columnas.
-*Conceptos:* scripts de bash, GitHub CLI.
-*Hecho:* todas las tareas tienen su issue, con label y milestone, y aparecen en el tablero.
 
 **T-0.7 · Entorno local** ⚪
 `uv`, Node LTS, Docker Desktop, Ollama con `llama3.2` y cuenta de Groq con API key en `.env`.
