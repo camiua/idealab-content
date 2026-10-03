@@ -43,7 +43,16 @@ Cada tarea tiene su issue, su rama y su pull request. El progreso se sigue en el
 
 ## Cómo arrancarlo
 
-*Se completará al cerrar el nivel Esencial.*
+*Las instrucciones completas se añadirán al cerrar el nivel Esencial.*
+
+### Activar el detector de secretos
+
+Después de clonar el repositorio, activa la comprobación automática que impide subir claves por error:
+
+```bash
+uv tool install pre-commit
+pre-commit install
+```
 
 ## Herramientas de desarrollo
 
