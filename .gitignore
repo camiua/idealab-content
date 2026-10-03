@@ -218,3 +218,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ==========================================================
+# IdeaLab Content: reglas propias del proyecto
+# ==========================================================
+
+# Secretos: solo se sube la plantilla
+.env
+.env.*
+!.env.example
+
+# Frontend (Node / Vite)
+node_modules/
+frontend/dist/
+npm-debug.log*
+
+# Datos generados por la app (índice de Chroma y grafo del RAG)
+backend/data/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
