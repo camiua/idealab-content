@@ -18,7 +18,7 @@ Diseño completo del sistema. Se construye por niveles: la tabla de **Estado** i
 
 - **Frontend:** React, Vite y Tailwind CSS.
 - **Backend:** Python, FastAPI y LangChain.
-- **Modelos:** Llama en local con Ollama, o en la nube con Groq.
+- **Modelos:** Llama 3.2 en local con Ollama, o gpt-oss-120b en la nube con Groq.
 - **Avanzado:** RAG sobre papers de arXiv con Chroma, trazabilidad con LangSmith y agentes con LangGraph.
 
 ## Estado
