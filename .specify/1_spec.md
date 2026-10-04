@@ -27,7 +27,7 @@ más el chat de retoques.
 |---|---|---|
 | D-1 | **Frontend en React (Vite + JavaScript + Tailwind CSS 4)**, separado del backend | Separa la interfaz de la lógica de IA, permite que la API se use desde otros clientes y facilita el diseño responsive y el modo oscuro. |
 | D-2 | **Backend en Python con FastAPI y LangChain** | Python concentra el ecosistema de IA. FastAPI valida con Pydantic y genera la documentación de la API en `/docs`. |
-| D-3 | **Dos proveedores de LLM: Ollama (local) y Groq (nube)**, elegibles por petición | Coste cero. Ollama no tiene límites y funciona sin internet; Groq es rápido y no depende del equipo. El equipo de desarrollo no tiene GPU dedicada, así que Groq es el proveedor por defecto en la demo. |
+| D-3 | **Dos proveedores de LLM: Ollama (local, Llama 3.2) y Groq (nube, gpt-oss-120b)**, elegibles por petición | Coste cero. Ollama no tiene límites y funciona sin internet; Groq es rápido y no depende del equipo. El equipo de desarrollo no tiene GPU dedicada, así que Groq es el proveedor por defecto en la demo. El plan gratuito de Groq ya no incluye modelos Llama de chat, así que se usa gpt-oss-120b, también de pesos abiertos. |
 | D-4 | **Un único punto de acceso al LLM** (`llm/providers.py`) | Cambiar o añadir un proveedor es tocar un archivo. Ningún otro módulo importa Ollama ni Groq. |
 | D-5 | **Los prompts son archivos versionados**, no texto dentro del código | Se mejoran sin tocar Python y su evolución queda en el historial de Git. Cada versión se mide (ver D-12). |
 | D-6 | **Backend sin estado y sin base de datos** | El perfil de empresa viaja en cada petición. Menos piezas, menos fallos. La única persistencia es el índice del RAG. |
@@ -97,7 +97,7 @@ Respuesta:
   "content": "¿Sabías que...",
   "platform": "instagram",
   "provider": "groq",
-  "model": "llama-3.1-8b-instant",
+  "model": "openai/gpt-oss-120b",
   "image": {
     "url": "https://images.unsplash.com/...",
     "alt": "Taza de café sobre una mesa de madera",
@@ -216,7 +216,7 @@ backend/app/prompts/templates/
 | `OLLAMA_BASE_URL` | `http://localhost:11434` (en Docker: `http://host.docker.internal:11434`) | 🟢 |
 | `OLLAMA_MODEL` | `llama3.2` | 🟢 |
 | `GROQ_API_KEY` | *(secreto)* | 🟢 |
-| `GROQ_MODEL` | Modelo Llama disponible en Groq, p. ej. `llama-3.1-8b-instant` (comprobar en la consola de Groq) | 🟢 |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` (modelo de pesos abiertos del plan gratuito; comprobar en la consola de Groq) | 🟢 |
 | `DEFAULT_PROVIDER` | `groq` | 🟢 |
 | `CORS_ORIGINS` | `http://localhost:5173` | 🟢 |
 | `UNSPLASH_ACCESS_KEY` | *(secreto)* | 🟡 |
@@ -299,7 +299,7 @@ petición libre → ROUTER → { social | finance | science } → GUARDARRAÍLES
 
 | Criterio | Dónde se cumple |
 |---|---|
-| **Uso de modelos LLM** | Llama vía Ollama y Groq (T-1.1, T-1.3, T-2.1) |
+| **Uso de modelos LLM** | Llama 3.2 vía Ollama y gpt-oss-120b vía Groq (T-1.1, T-1.3, T-2.1) |
 | **Uso de frameworks para aplicaciones con LLMs** | LangChain (todo el backend), LangSmith (T-3.1), LangGraph (T-4.2) |
 | **Prompt engineering** | Plantillas versionadas y medidas (T-1.4, T-1.8) |
 | **Técnicas de PLN** | Generación de texto, extracción de palabras clave (T-2.3), generación multilingüe (T-3.3), resumen de datos (T-3.4), chunking, embeddings y búsqueda semántica (T-3.5, T-3.6), clasificación (T-4.1), extracción de entidades y relaciones (T-4.3) |

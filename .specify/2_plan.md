@@ -24,7 +24,7 @@ Repo: **`idealab-content`** · rama de trabajo: `develop` · rama estable: `main
 | Frontend | React · Vite · JavaScript · Tailwind CSS 4 · react-markdown |
 | Backend | Python · FastAPI · Pydantic · uv |
 | IA | LangChain · LangSmith · LangGraph |
-| Modelos | Llama 3.2 (Ollama, local) · Llama en Groq (nube) |
+| Modelos | Llama 3.2 (Ollama, local) · gpt-oss-120b en Groq (nube) |
 | RAG | arXiv · Chroma · embeddings multilingües locales · NetworkX (Graph RAG) |
 | Integraciones | Unsplash (imágenes) · yfinance (mercados) |
 | Calidad | pytest · ruff · pre-commit · gitleaks · GitHub Actions |
