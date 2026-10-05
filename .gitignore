@@ -241,3 +241,6 @@ backend/data/
 Thumbs.db
 desktop.ini
 .idea/
+
+# Ajustes personales de VS Code (rutas propias de cada equipo)
+.vscode/settings.json
