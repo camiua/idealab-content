@@ -32,3 +32,31 @@ Mismo prompt (post de Instagram para una cafetería de Madrid), temperatura 0,7.
 
 - `load_dotenv()` **no sobrescribe** variables que ya existen en el entorno: si se cargan con `source .env` en una terminal, los cambios posteriores del `.env` no se aplican hasta abrir otra terminal.
 - Las dependencias del spike se declaran en el propio script (cabecera `# /// script`) y `uv run` crea un entorno temporal, sin instalar nada en el proyecto.
+
+### Proyecto backend (T-1.2)
+
+- **Entorno virtual fuera de OneDrive:** el repositorio está en una carpeta sincronizada y un `.venv` con
+  miles de archivos la ralentiza. Con `UV_PROJECT_ENVIRONMENT` (en `.vscode/settings.json`, que no se sube)
+  uv crea el entorno en `C:\Users\<usuario>\.venvs\idealab-backend`.
+- **`pyproject.toml` + `uv.lock`:** el primero declara qué librerías usa el proyecto; el segundo fija las
+  versiones exactas de todas, incluidas las indirectas. Con `uv sync` cualquiera recrea el mismo entorno.
+- **`SecretStr` para las claves:** si se imprime la configuración, la clave de Groq aparece como `**********`.
+- **`develop` como rama por defecto:** `Closes #N` en un PR hacia `develop` cierra la issue y el tablero la
+  mueve a *Done* automáticamente.
+
+### Punto único de acceso al LLM (T-1.3)
+
+- **Patrón Factory:** `get_chat_model(provider)` es la única función que crea modelos. El resto del código
+  usa la interfaz común de LangChain (`BaseChatModel` y `.invoke`) sin saber qué proveedor hay detrás.
+  Cambiar de modelo o añadir un proveedor solo afecta a `llm/providers.py`.
+- **Misma petición, distinta calidad** ("Saluda en 5 palabras"):
+
+  | Proveedor | Respuesta | Observación |
+  |---|---|---|
+  | Groq · gpt-oss-120b | "¡Hola! ¿Cómo te encuentras hoy?" | 5 palabras, correcto |
+  | Ollama · Llama 3.2 (3B) | "¡Hola, soy aquí para ayudarte!" | 6 palabras y error gramatical ("soy aquí") |
+
+  Confirma lo visto en T-1.1: el modelo pequeño comete más errores de idioma y sigue peor las
+  restricciones. Refuerza la decisión de usar Groq como proveedor por defecto.
+- **Fallar pronto:** `DEFAULT_PROVIDER` se tipa con `Literal["ollama", "groq"]`. Un valor mal escrito en el
+  `.env` impide arrancar la app con un mensaje claro, en lugar de fallar más tarde en mitad de una petición.
