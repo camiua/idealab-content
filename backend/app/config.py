@@ -1,13 +1,13 @@
 """Configuración de la app, leída del archivo .env de la raíz del repo."""
 
 from pathlib import Path
-
+from typing import Literal
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # backend/app/config.py -> subimos dos niveles hasta la raíz del repo
 ROOT_DIR = Path(__file__).resolve().parents[2]
-
+Provider = Literal["ollama", "groq"]
 
 
 class Settings(BaseSettings):
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     ollama_model: str = "llama3.2"
     groq_api_key: SecretStr | None = None
     groq_model: str = "openai/gpt-oss-120b"
-    default_provider: str = "groq"
+    default_provider: Provider = "groq"
 
     # Frontend
     cors_origins: str = "http://localhost:5173"
