@@ -252,6 +252,7 @@ Perfiles de ejemplo listos. Adaptador de vídeo y cargador comprobados.
 **E-3 · Imagen generada con IA** ⭐ — alternativa a Unsplash con un modelo de Hugging Face.
 **E-4 · Lectura en voz alta** ⭐ — botón para escuchar el post.
 **E-5 · Historial de posts** ⭐ — últimos posts generados, guardados en el navegador.
+**E-6 · Comparación de prompts en LangSmith** ⭐ — el banco de pruebas como *experimento* de LangSmith: v1 y v2 lado a lado, con su porcentaje de reglas cumplidas.
 
 ---
 
