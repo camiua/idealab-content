@@ -60,3 +60,47 @@ Mismo prompt (post de Instagram para una cafetería de Madrid), temperatura 0,7.
   restricciones. Refuerza la decisión de usar Groq como proveedor por defecto.
 - **Fallar pronto:** `DEFAULT_PROVIDER` se tipa con `Literal["ollama", "groq"]`. Un valor mal escrito en el
   `.env` impide arrancar la app con un mensaje claro, en lugar de fallar más tarde en mitad de una petición.
+
+### Plantillas de prompt v1 (T-1.4)
+
+- **Prompts fuera del código:** cada plantilla es un archivo Markdown en `prompts/templates/` con su versión
+  en un comentario (`<!-- version: v1 -->`). Se pueden leer y mejorar sin tocar Python, y Git muestra
+  exactamente qué cambió entre versiones.
+- **Prompt común + prompt por plataforma:** las reglas generales (rol, idioma, no inventar datos) están en
+  `system.md` y se aplican a todas las peticiones; cada plataforma añade sus propias reglas. Así no se
+  repiten reglas y cada pieza se mejora por separado.
+- **Restricciones concretas:** "máximo 280 caracteres, contando espacios y hashtags" en lugar de
+"un post corto". Aun así, el modelo puede no cumplirlas, por lo que las reglas también se comprueban con
+  código después de generar (T-1.5).
+- **v1 *zero-shot* a propósito:**
+  - *Zero-shot*: solo instrucciones, sin ejemplos.
+  - *Few-shot*: instrucciones y uno o varios ejemplos de buen resultado. Suele mejorar el formato y el tono.
+
+  La v1 se escribe sin ejemplos para tener una **línea base medible**. El banco de pruebas (T-1.8) indicará
+  qué reglas se incumplen y, si hace falta, la v2 añadirá ejemplos (*few-shot*). La comparación entre
+  versiones se registra en `docs/prompt-engineering.md`.
+
+### Errores anticipados por plataforma (T-1.4)
+
+Las plantillas incluyen reglas para evitar errores que obligarían a corregir el texto a mano antes de publicarlo:
+
+| Plataforma | Error típico | Regla en el prompt |
+|---|---|---|
+| X | Contar los emojis como 1 carácter: X los cuenta como 2 y rechaza el post | "Cada emoji cuenta como 2 caracteres". El servicio (T-1.5) lo comprueba igual |
+| Instagram | Gancho cortado: Instagram oculta el texto tras unos 125 caracteres | Primera frase de menos de 125 caracteres |
+| LinkedIn | Gancho cortado: LinkedIn oculta el texto tras unos 200 caracteres | Las dos primeras líneas enganchan por sí solas |
+| Blog | Título cortado en Google hacia los 60 caracteres | Título de 60 caracteres como máximo |
+| Todas | Hashtags rotos por espacios o guiones (`#café-de-barrio`) | Hashtags de una sola palabra |
+| Todas | Huecos sin rellenar ("[nombre de la empresa]") o enlaces inventados | Sin huecos ni URLs (`system.md`) |
+
+### Buenas prácticas en aplicaciones con LLMs
+
+Prácticas habituales en el desarrollo con LLMs y dónde se aplican en el proyecto:
+
+| Práctica | Por qué | Dónde |
+|---|---|---|
+| **Prompt común + prompt específico por plataforma** | Las reglas generales se escriben una sola vez y cada plataforma añade las suyas. Cada pieza se mejora por separado. | T-1.4: `system.md` + `platforms/*.md` |
+| **Medir en lugar de opinar** | Una mejora en un prompt solo es real si se puede medir. Las versiones se comparan con evaluaciones automatizadas, en las mismas condiciones: mismos temas, modelo y temperatura. | T-1.8: banco de pruebas, v1 frente a v2 |
+| **Observabilidad** | Con LangSmith, cada llamada al modelo queda registrada (prompt, respuesta, tiempo y tokens) sin cambiar el código. Permite revisar por qué un resultado salió mal. | T-3.1 |
+| **Agentes especializados por tipo de trabajo** | Un agente tiene sentido cuando cambia la tarea (consultar datos de bolsa, buscar en papers), no cuando solo cambian las reglas del texto, que ya resuelven las plantillas. | T-4.2: agentes de redes sociales, finanzas y ciencia |
+| **No depender de un único servicio** | Los planes gratuitos cambian a menudo (Groq retiró Llama). El modelo es configurable en el `.env`, el patrón Factory aísla a cada proveedor y Ollama funciona en local como alternativa. | T-1.3: `llm/providers.py` |
