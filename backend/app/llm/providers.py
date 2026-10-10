@@ -1,5 +1,7 @@
 """Único punto de acceso a los modelos de chat (Ollama y Groq)."""
 
+import groq
+import httpx
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_groq import ChatGroq
 from langchain_ollama import ChatOllama
@@ -9,6 +11,7 @@ from app.config import Provider, settings
 
 class ProviderNotConfiguredError(Exception):
     """El proveedor pedido no se puede usar (por ejemplo, falta su API key)."""
+
 
 
 def get_chat_model(
@@ -34,3 +37,27 @@ def get_chat_model(
         )
 
     raise ValueError(f"Proveedor desconocido: {provider}")
+
+
+def get_model_name(provider: Provider) -> str:
+    """Nombre del modelo que usa cada proveedor, según el .env."""
+    return settings.groq_model if provider == "groq" else settings.ollama_model
+
+
+def is_unavailable_error(exc: Exception) -> bool:
+    """El proveedor no responde o rechaza la conexión (Ollama apagado, clave de Groq no válida...)."""
+    return isinstance(
+        exc,
+        (
+            ProviderNotConfiguredError,
+            ConnectionError,
+            httpx.ConnectError,
+            groq.APIConnectionError,
+            groq.AuthenticationError,
+        ),
+    )
+
+
+def is_rate_limit_error(exc: Exception) -> bool:
+    """Groq ha alcanzado el límite de peticiones del plan gratuito."""
+    return isinstance(exc, groq.RateLimitError)
