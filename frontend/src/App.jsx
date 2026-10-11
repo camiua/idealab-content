@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { generatePost } from './api/client.js'
+import GeneratorForm from './components/GeneratorForm.jsx'
 import Hero from './components/Hero.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import { useTheme } from './hooks/useTheme.js'
@@ -13,6 +16,22 @@ function Logo() {
 
 export default function App() {
   const { theme, toggleTheme } = useTheme()
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  async function handleGenerate(payload) {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await generatePost(payload)
+      setResult(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen font-sans text-black dark:text-paper">
@@ -27,8 +46,14 @@ export default function App() {
 
         <Hero theme={theme} />
 
-        <main>
-          <p className="text-neutral-600 dark:text-stone-400">Aquí irá el formulario.</p>
+        <main className="mx-auto grid max-w-337 items-start gap-8 lg:grid-cols-2 lg:gap-12">
+          <GeneratorForm onGenerate={handleGenerate} loading={loading} />
+
+          {/* Provisional: en el siguiente paso lo sustituye PostResult */}
+          <section aria-live="polite">
+            {error && <p role="alert" className="font-bold">{error}</p>}
+            {result && <pre className="whitespace-pre-wrap font-sans">{result.content}</pre>}
+          </section>
         </main>
       </div>
     </div>
