@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Modo oscuro por clase: se activa cuando <html> tiene la clase "dark" */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Colores, tipografías y sombras sólidas del estilo neobrutalista */
+@theme {
+  --color-carbon: #1c1c1c;
+  --color-paper: #f3efe6;
+  --font-display: "Unbounded", sans-serif;
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --shadow-brutal: 6px 6px 0 var(--color-black);
+  --shadow-brutal-sm: 3px 3px 0 var(--color-black);
+  --shadow-brutal-paper: 6px 6px 0 var(--color-paper);
+  --shadow-brutal-paper-sm: 3px 3px 0 var(--color-paper);
+}
+
+/* Fondo punteado, como un cuaderno de laboratorio */
+body {
+  background-image: radial-gradient(var(--color-neutral-300) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+.dark body {
+  background-image: radial-gradient(#2c2c2c 1.2px, transparent 1.2px);
+}
+
+.dark body {
+  background-image: radial-gradient(#2c2c2c 1.2px, transparent 1.2px);
+}
+
+/* Entrada del titular: cada palabra sube y aparece, una detrás de otra */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.8em); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.word-rise {
+  display: inline-block;
+  opacity: 0;
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+/* Si la persona tiene activado "reducir movimiento" en su sistema, no animamos */
+@media (prefers-reduced-motion: reduce) {
+  .word-rise { animation: none; opacity: 1; }
+}
