@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { generatePost } from './api/client.js'
 import GeneratorForm from './components/GeneratorForm.jsx'
+import PostResult from './components/PostResult.jsx'
 import Hero from './components/Hero.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import { useTheme } from './hooks/useTheme.js'
@@ -19,8 +20,10 @@ export default function App() {
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [lastPayload, setLastPayload] = useState(null)
 
   async function handleGenerate(payload) {
+    setLastPayload(payload)
     setLoading(true)
     setError(null)
     try {
@@ -46,14 +49,18 @@ export default function App() {
 
         <Hero theme={theme} />
 
-        <main className="mx-auto grid max-w-337 items-start gap-8 lg:grid-cols-2 lg:gap-12">
+        <main className="mx-auto grid max-w-330 gap-8 lg:grid-cols-2 lg:gap-12">
           <GeneratorForm onGenerate={handleGenerate} loading={loading} />
 
-          {/* Provisional: en el siguiente paso lo sustituye PostResult */}
-          <section aria-live="polite">
-            {error && <p role="alert" className="font-bold">{error}</p>}
-            {result && <pre className="whitespace-pre-wrap font-sans">{result.content}</pre>}
-          </section>
+          {/* En pantalla grande, el resultado mide lo mismo que el formulario */}
+          <div className="lg:h-0 lg:min-h-full">
+            <PostResult
+              result={result}
+              loading={loading}
+              error={error}
+              onRegenerate={() => handleGenerate(lastPayload)}
+            />
+          </div>
         </main>
       </div>
     </div>

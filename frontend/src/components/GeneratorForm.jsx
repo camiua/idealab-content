@@ -54,7 +54,7 @@ export default function GeneratorForm({ onGenerate, loading }) {
           maxLength={TOPIC_MAX}
           rows={3}
           placeholder="Ej.: café de especialidad para empezar bien el lunes"
-          className="w-full resize-none rounded-xl border-2 border-black bg-white p-3 placeholder:text-neutral-400 focus:outline-3 focus:outline-offset-2 dark:border-paper dark:bg-carbon dark:placeholder:text-stone-500"
+          className="w-full resize-none rounded-xl border-2 border-black bg-white p-3 placeholder:text-neutral-400 focus-visible:outline-3 focus-visible:outline-offset-2 dark:border-paper dark:bg-carbon dark:placeholder:text-stone-500"
         />
         <p className="mt-1 text-right text-xs text-neutral-500 dark:text-stone-400">
           {topic.length} / {TOPIC_MAX}
