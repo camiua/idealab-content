@@ -1,3 +1,7 @@
+import { useState } from 'react'
+import { generatePost } from './api/client.js'
+import GeneratorForm from './components/GeneratorForm.jsx'
+import PostResult from './components/PostResult.jsx'
 import Hero from './components/Hero.jsx'
 import ThemeToggle from './components/ThemeToggle.jsx'
 import { useTheme } from './hooks/useTheme.js'
@@ -13,6 +17,24 @@ function Logo() {
 
 export default function App() {
   const { theme, toggleTheme } = useTheme()
+  const [result, setResult] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [lastPayload, setLastPayload] = useState(null)
+
+  async function handleGenerate(payload) {
+    setLastPayload(payload)
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await generatePost(payload)
+      setResult(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen font-sans text-black dark:text-paper">
@@ -27,8 +49,18 @@ export default function App() {
 
         <Hero theme={theme} />
 
-        <main>
-          <p className="text-neutral-600 dark:text-stone-400">Aquí irá el formulario.</p>
+        <main className="mx-auto grid max-w-330 gap-8 lg:grid-cols-2 lg:gap-12">
+          <GeneratorForm onGenerate={handleGenerate} loading={loading} />
+
+          {/* En pantalla grande, el resultado mide lo mismo que el formulario */}
+          <div className="lg:h-0 lg:min-h-full">
+            <PostResult
+              result={result}
+              loading={loading}
+              error={error}
+              onRegenerate={() => handleGenerate(lastPayload)}
+            />
+          </div>
         </main>
       </div>
     </div>
