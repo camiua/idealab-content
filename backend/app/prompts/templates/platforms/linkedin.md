@@ -1,4 +1,4 @@
-<!-- version: v1 -->
+<!-- version: v2 -->
 Escribe un post para LinkedIn sobre este tema: {topic}
 
 Audiencia: {audience_rules}
@@ -11,3 +11,4 @@ Reglas de LinkedIn:
 - Entre 3 y 5 hashtags, todos al final del texto.
 - Tono profesional y cercano. Como mucho, uno o dos emojis.
 - Texto plano, sin Markdown.
+- Habla como la marca, no como una persona: sin anécdotas personales. Si quieres poner un ejemplo, que sea claramente hipotético ("imagina una pequeña tienda que…").
