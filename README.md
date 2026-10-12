@@ -43,7 +43,69 @@ Cada tarea tiene su issue, su rama y su pull request. El progreso se sigue en el
 
 ## Cómo arrancarlo
 
-*Las instrucciones completas se añadirán al cerrar el nivel Esencial.*
+### Requisitos
+
+- [uv](https://docs.astral.sh/uv/) (gestiona Python 3.12 y las dependencias del backend)
+- [Node.js](https://nodejs.org/) 20.19 o superior
+- Una clave gratuita de [Groq](https://console.groq.com/keys)
+- *Opcional:* [Ollama](https://ollama.com/) con el modelo `llama3.2`, para generar en local sin internet
+
+### 1. Clonar y configurar
+
+```bash
+git clone https://github.com/camiua/idealab-content.git
+cd idealab-content
+cp .env.example .env
+```
+
+Abre `.env` y escribe tu clave en `GROQ_API_KEY`. El archivo `.env` nunca se sube al repositorio.
+
+Activa también el detector de secretos, que impide subir claves por error:
+
+```bash
+uv tool install pre-commit
+pre-commit install
+```
+
+### 2. Arrancar el backend (terminal 1)
+
+```bash
+cd backend
+uv sync
+uv run uvicorn app.main:app --reload
+```
+
+La API queda en http://localhost:8000 y su documentación interactiva en http://localhost:8000/docs.
+
+### 3. Arrancar el frontend (terminal 2)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Abre http://localhost:5173, escribe un tema, elige plataforma, audiencia y modelo, y pulsa **Generar post**.
+
+### Ollama (opcional)
+
+Para generar en local, instala Ollama y descarga el modelo:
+
+```bash
+ollama pull llama3.2
+```
+
+En la interfaz, elige **Ollama · en local**. Es mucho más lento que Groq (unos 30 s por post en un portátil sin GPU). Si Ollama no está arrancado, la app lo indica con un mensaje claro.
+
+### Banco de pruebas de prompts
+
+Mide la calidad de las plantillas de prompt con 20 posts en condiciones fijas. Desde `backend/`:
+
+```bash
+uv run python -m scripts.eval_prompts --label prueba
+```
+
+Los resultados se guardan en `docs/eval/`. La evolución de los prompts y la comparación entre versiones están en [`docs/prompt-engineering.md`](docs/prompt-engineering.md).
 
 ### Activar el detector de secretos
 
