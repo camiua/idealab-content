@@ -1,0 +1,17 @@
+# Saltos de línea unificados en todo el repositorio.
+# Git guarda los archivos de texto con LF (formato de Linux, Mac y Docker),
+# aunque se trabaje desde Windows.
+* text=auto eol=lf
+
+# Scripts propios de Windows: mantienen CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Archivos binarios: Git no debe tocarlos
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
