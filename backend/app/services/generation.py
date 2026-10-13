@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.messages import AIMessage, BaseMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
 from app.prompts.builder import (
     Audience,
