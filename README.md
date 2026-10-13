@@ -1,10 +1,8 @@
 # IdeaLab Content
 
-**🔗 Pruébalo online:** https://idealab-content.vercel.app
+**🔗 Demo en vivo:** https://idealab-content.vercel.app
 
-> El backend está en el plan gratuito de Render y se duerme tras un rato sin uso: la primera generación puede tardar hasta un minuto.
-
-(aquí sigue lo que ya tenías: la descripción, "Cómo arrancarlo", etc.)
+> El backend está alojado en el plan gratuito de Render: si lleva un tiempo sin uso, la primera petición puede tardar hasta un minuto en responder.
 
 Generador de contenido para blogs y redes sociales con IA generativa: LLMs, LangChain, RAG y agentes.
 
