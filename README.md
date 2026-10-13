@@ -66,6 +66,17 @@ Activa también el detector de secretos, que impide subir claves por error:
 uv tool install pre-commit
 pre-commit install
 ```
+### Opción rápida: Docker
+
+Con [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y la clave en `.env`, un solo comando arranca todo:
+
+```bash
+docker compose up --build
+```
+
+La web queda en http://localhost:5173 y la API en http://localhost:8000. Ollama no va dentro de Docker: si lo tienes instalado, el backend lo usa desde tu ordenador.
+
+Si prefieres arrancarlo sin Docker, sigue los pasos 2 y 3.
 
 ### 2. Arrancar el backend (terminal 1)
 
